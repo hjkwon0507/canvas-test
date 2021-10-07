@@ -33,13 +33,20 @@
       function render() {
         // console.log(videoElem.currentTime);
         ctx.drawImage(videoElem, 0, 0, 600, 400);
-        
-        for (let i = 0; i < messages.length; i++) {
-          if (videoElem.currentTime > messages[i].time && videoElem.currentTime < messages[i+1].time) {
-            ctx.fillText(messages[i].message, messages[i].x, messages[i].y);
-          }
+       if (videoElem.currentTime < 12) {
+            for (i = 0; i < messages.length; i++) {
+                try {
+                    if (videoElem.currentTime > messages[i].time) {
+                            ctx.fillText(messages[i].message, messages[i].x, messages[i].y);
+                        //console.log(videoElem.currentTime)
+                    }
+                } 
+                catch (exception){
+                    console.log(i)
+                    break
+                }
+            }
         }
-
         
         requestAnimationFrame(render);
       }
