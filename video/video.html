@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Video</h1>
-    <video class="video" src="video.mp4" controls muted loop></video>
+    <video class="video" width="300" height="200" src="working.mp4" controls muted loop></video>
     <canvas class="canvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
 
     <script>
@@ -25,9 +25,9 @@
       videoElem.addEventListener('canplaythrough', render);
 
       const messages = [
-        {time: 3, message: '자막 1 입니다.', x: 100, y: 100},
-        {time: 7, message: '자막 2 입니다.', x: 300, y: 300},
-        {time: 11, message: '자막 3 입니다.', x: 400, y: 200}
+        {time: 3, message: 'API 문서 작성중 입니다.', x: 150, y: 360},
+        {time: 7, message: '백엔드 개발자의 코드 작성', x: 150, y: 360},
+        {time: 11, message: '잠시 감상합시다~!', x: 150, y: 360}
       ];
 
       function render() {
@@ -35,7 +35,7 @@
         ctx.drawImage(videoElem, 0, 0, 600, 400);
         
         for (let i = 0; i < messages.length; i++) {
-          if (videoElem.currentTime > messages[i].time ) {
+          if (videoElem.currentTime > messages[i].time && videoElem.currentTime < messages[i+1].time) {
             ctx.fillText(messages[i].message, messages[i].x, messages[i].y);
           }
         }

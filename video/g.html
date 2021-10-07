@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video</title>
+</head>
+<body>
+    <h1>Video</h1>
+    <canvas class="canvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
+
+    <script>
+      // 캔버스 다룰 때 기본 세팅, 캔버스콘텍스트 가져오기
+      const canvas = document.querySelector('.canvas');
+      const ctx = canvas.getContext('2d');
+
+      // 폰트 및 색상 세팅
+      ctx.font = 'bold 30px serif';
+      ctx.fillStyle = '#fff';
+
+
+      const videoElem = document.querySelector('.video');
+      videoElem.addEventListener('canplaythrough', render);
+
+      const messages = [
+        {time: 3, message: '자막 1 입니다.', x: 100, y: 100},
+        {time: 7, message: '자막 2 입니다.', x: 300, y: 300},
+        {time: 11, message: '자막 3 입니다.', x: 400, y: 200}
+      ];
+
+      function render() {
+        // console.log(videoElem.currentTime);
+        ctx.drawImage(videoElem, 0, 0, 600, 400);
+        
+        for (let i = 0; i < messages.length; i++) {
+          if (videoElem.currentTime > messages[i].time ) {
+            ctx.fillText(messages[i].message, messages[i].x, messages[i].y);
+          }
+        }
+
+        
+        requestAnimationFrame(render);
+      }
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Download</title>
+    <style>
+        .app {
+            position: relative;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        #myCanvas {
+            /* position: absolute;
+            top: 350px;
+            left: 130px; */
+            z-index: 10;
+            border: 1px solid grey;
+        }
+
+       
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <h1>이미지 업로드, 수정 후 다운로드 하기</h1>
+
+        <canvas id="myCanvas" width="600" height="300"></canvas>
+        <textarea id="txtBox"></textarea>
+        <br>
+        <input type="file" id="file">
+        <button id="exportImg">export img</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let WIDTH = canvas.width
+        let HEIGHT = canvas.height
+
+        let img = null;
+        const fileChange = document.getElementById('file');
+        fileChange.addEventListener('change', function (event) {
+            let reader = new FileReader(); // 파일을 fileReader로 읽는다.
+            reader.onload = function (e) {
+                img = new Image();
+                img.src = e.target.result
+                img.onload = function () { //생성된 데이터를 캔버스에 그려준다.
+                    ctx.save()
+                    ctx.drawImage(img, 0, 0, WIDTH * 1, HEIGHT * 1); // drawImage(img, x좌표, y좌표, 넓이, 높이)
+                    ctx.restore()
+                }
+            };
+            reader.readAsDataURL(event.target.files[0])
+        });
+
+
+        const txtBox = document.getElementById('txtBox');
+        txtBox.addEventListener('keyup', function (event) {
+            drawing(event.target.value)
+        });
+
+        
+
+        // 이미지 출력
+        function exportImage(){
+            let image = canvas.toDataURL("image/png");
+            console.log(image)
+            let href = image.replace("image/png", "image/octet-stream");
+            window.location.href = href;
+        }
+    </script>
+</body>
+
+</html>

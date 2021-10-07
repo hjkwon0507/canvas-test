@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Load Video</title>
+  <style>
+    #myCanvas,
+    .video {
+      border: 1px solid grey;
+    }
+
+    .video {
+      width: 600px;
+      height: 400px;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <h1>Video</h1>
+  <div class="video_box"></div>
+  <canvas id="myCanvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
+  <br>
+  <input type="file" id="file" class="fileuploader" style="display: block;">
+  <button id="exportImg">export img</button>
+  <script>
+
+    // video 불러오기
+    // jQuery(document).ready(function ($) {
+
+    //   // Click button to activate hidden file input
+    //   $('.fileuploader-btn').on('click', function () {
+    //     $('.fileuploader').click();
+    //   });
+
+    //   // Click above calls the open dialog box
+    //   // Once something is selected the change function will run
+    //   $('.fileuploader').change(function () {
+
+    //     // Create new FileReader as a variable
+    //     var reader = new FileReader();
+
+    //     // Onload Function will run after video has loaded
+    //     reader.onload = function (file) {
+    //       var fileContent = file.target.result;
+    //       $('.video_box').append('<video id="video" width="600" height="400" src="' + fileContent + '" controls></video>');
+
+    //     }
+
+    //     // Get the selected video from Dialog
+    //     reader.readAsDataURL(this.files[0]);
+
+    //   });
+
+    // });
+
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    let WIDTH = canvas.width
+    let HEIGHT = canvas.height
+
+    let video = null;
+    const fileChange = document.getElementById('file');
+        fileChange.addEventListener('change', function (event) {
+        let reader = new FileReader(); // 파일을 fileReader로 읽는다.
+        reader.onload = function (e) {
+            video = new Image();
+            video.src = e.target.result
+            video.onload = function () { //생성된 데이터를 캔버스에 그려준다.
+                ctx.save()
+                ctx.drawImage(video, 0, 0, WIDTH * 1, HEIGHT * 1); // drawImage(img, x좌표, y좌표, 넓이, 높이)
+                ctx.restore()
+            }
+        };
+        reader.readAsDataURL(event.target.files[0])
+    });
+
+
+    const messages = [
+      { time: 3, message: '자막 1 입니다.', x: 100, y: 100 },
+      { time: 7, message: '자막 2 입니다.', x: 300, y: 300 },
+      { time: 11, message: '자막 3 입니다.', x: 400, y: 200 }
+    ];
+
+    function render() {
+      // console.log(videoElem.currentTime);
+      ctx.drawImage(img, 0, 0, 600, 400);
+
+      for (let i = 0; i < messages.length; i++) {
+        if (videoElem.currentTime > messages[i].time) {
+          ctx.fillText(messages[i].message, messages[i].x, messages[i].y);
+        }
+      }
+
+
+      requestAnimationFrame(render);
+    }
+  </script>
+</body>
+
+</html>
