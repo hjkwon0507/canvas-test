@@ -5,16 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video</title>
+    <style>
+      canvas {
+        background-color: #eee;
+      }
+      video {
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+    </style>
 </head>
 <body>
     <h1>Video</h1>
-    <video class="video" width="300" height="200" src="working.mp4" controls muted loop></video>
+    <video class="video" src="working.mp4" autoplay muted loop></video>
     <canvas class="canvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
 
     <script>
       // 캔버스 다룰 때 기본 세팅, 캔버스콘텍스트 가져오기
       const canvas = document.querySelector('.canvas');
       const ctx = canvas.getContext('2d');
+      let canPlayState = false;
 
       // 폰트 및 색상 세팅
       ctx.font = 'bold 30px serif';
@@ -35,7 +46,7 @@
         ctx.drawImage(videoElem, 0, 0, 600, 400);
         
         for (let i = 0; i < messages.length; i++) {
-          if (videoElem.currentTime > messages[i].time && videoElem.currentTime < messages[i+1].time) {
+          if (videoElem.currentTime > messages[i].time) {
             ctx.fillText(messages[i].message, messages[i].x, messages[i].y);
           }
         }
